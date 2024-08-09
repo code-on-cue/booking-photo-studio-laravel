@@ -12,7 +12,6 @@
     <meta name="robots" content="index, follow">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="language" content="English">
-    <meta name="author" content="Angga Kurnia">
 
     <!-- Meta -->
     <meta property="og:title" content="Hey Studio Tangerang" />
@@ -78,9 +77,6 @@
     <script src="{{ asset('/guest/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('/guest/animation.js') }}"></script>
     <script src="{{ asset('/guest/main.js') }}"></script>
-    <script>
-        console.log("created by Angga Kurnia, ig @angkrnia")
-    </script>
 </body>
 
 </html>

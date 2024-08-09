@@ -5,7 +5,7 @@
             <div class="col-12">
                 <nav class="main-nav">
                     <!-- ***** Logo Start ***** -->
-                    <a href="/" class="logo">
+                    <a href="{{ asset('/') }}" class="logo">
                         <h4>Hey<span>Studio</span></h4>
                     </a>
                     <!-- ***** Logo End ***** -->
@@ -24,7 +24,7 @@
                             <a href="#contact">Contact</a>
                         </li>
                         <li class="scroll-to-section">
-                            <a href="https://heystudio.web.id/login">Login</a>
+                            <a href="{{ route('login') }}">Login</a>
                         </li>
                     </ul>
                     <a class="menu-trigger">
