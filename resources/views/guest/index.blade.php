@@ -1,5 +1,23 @@
 @extends('guest.layouts.main')
 
+@section('navbar')
+    <li class="scroll-to-section">
+        <a href="#top" class="active">Home</a>
+    </li>
+    <li class="scroll-to-section">
+        <a href="#about">About Us</a>
+    </li>
+    <li class="scroll-to-section">
+        <a href="#services">Services</a>
+    </li>
+    <li class="scroll-to-section">
+        <a href="#contact">Contact</a>
+    </li>
+    <li class="scroll-to-section">
+        <a href="{{ route('login') }}">Login</a>
+    </li>
+@endsection
+
 @section('content')
     <div class="main-banner wow fadeIn" id="top" data-wow-duration="1s" data-wow-delay="0.5s">
         <div class="container">
@@ -11,12 +29,13 @@
                                 data-wow-delay="1s">
                                 <h2>
                                     Abadikan Momen Bersama di
-                                    <em style="display:block">Hey Studio</em>
+                                    <em style="display:block">{{ ConfigHelper::get('appName') }}</em>
                                 </h2>
-                                <a href="/bookings/create" class="btn btn-lg mt-2 btn-booking">
+                                <a href="{{ route('guest.transaction') }}" class="btn btn-lg mt-2 btn-booking">
                                     <i class="bi bi-calendar-plus"></i> Booking Now
                                 </a>
-                                <a href="https://wa.me/6281386764224" class="btn btn-lg mt-2 btn-booking">
+                                <a href="https://wa.me/{{ ConfigHelper::get('whatsapp') }}"
+                                    class="btn btn-lg mt-2 btn-booking">
                                     <i class="bi bi-whatsapp"></i> Admin
                                 </a>
                             </div>
@@ -132,10 +151,13 @@
                             <div class="card-body">
                                 <div class="d-flex align-items-center justify-content-between mb-2">
                                     <h5>Sesi Self Photo</h5>
-                                    <p class="badge" style="background-color: #03a4ed;">Rp 75.000</p>
+                                    <p class="badge" style="background-color: #03a4ed;">
+                                        {{ StrHelper::currency(ConfigHelper::get('price'), 'Rp') }}
+                                    </p>
                                 </div>
                                 <ul class="list-group">
-                                    <li class="list-group-item list-group-item-action">2 Orang</li>
+                                    <li class="list-group-item list-group-item-action">
+                                        {{ ConfigHelper::get('maximumPerson') }} Orang</li>
                                     <li class="list-group-item list-group-item-action">25 Menit Sesi Foto</li>
                                     <li class="list-group-item list-group-item-action">5 Menit Persiapan & Cetak Foto
                                     </li>
@@ -144,13 +166,14 @@
                                 </ul>
                                 <div class="my-2 d-flex align-items-center justify-content-between">
                                     <h5>Tambahan Orang</h5>
-                                    <p class="badge" style="background-color: #03a4ed;">Rp 30.000/Orang</p>
+                                    <p class="badge" style="background-color: #03a4ed;">
+                                        {{ StrHelper::currency(ConfigHelper::get('additionalPrice'), 'Rp') }}/Orang</p>
                                 </div>
                                 <ul class="list-group mb-2">
                                     <li class="list-group-item list-group-item-action">Free Cetak Foto</li>
                                 </ul>
-                                <a href="/bookings/create" class="btn text-white" style="background-color: #03a4ed;"><i
-                                        class="bi bi-calendar-plus"></i> Booking
+                                <a href="{{ route('guest.transaction') }}" class="btn text-white"
+                                    style="background-color: #03a4ed;"><i class="bi bi-calendar-plus"></i> Booking
                                     Sekarang</a>
                             </div>
                         </div>
@@ -182,25 +205,23 @@
             <div class="row">
                 <div class="col-lg-6 align-self-center wow fadeInLeft" data-wow-duration="0.5s" data-wow-delay="0.25s">
                     <div class="section-heading">
-                        <iframe
-                            src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3965.794440406854!2d106.41302977499102!3d-6.290726493698293!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zNsKwMTcnMjYuNiJTIDEwNsKwMjQnNTYuMiJF!5e0!3m2!1sen!2sid!4v1709633165684!5m2!1sen!2sid"
-                            width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
-                            referrerpolicy="no-referrer-when-downgrade" class="me-3 gmaps"></iframe>
+                        {!! ConfigHelper::get('map') !!}
                         <div class="d-flex flex-column gap-3 text-white mt-3">
-                            <h6>Alamat: Jl Raya Cisoka - Adiyasa, Kp. Pasanggrahan, Kec. Solear, Kabupaten Tangerang,
-                                Banten 15730</h6>
-                            <h6><i class="bi bi-whatsapp"></i> Whatsapp&nbsp;<a href="https://wa.me/6281386764224"
-                                    class="text-white"> 0813-8676-4224</a>
+                            <h6>Alamat: {{ ConfigHelper::get('address') }}</h6>
+                            <h6><i class="bi bi-whatsapp"></i> Whatsapp&nbsp;<a
+                                    href="https://wa.me/{{ ConfigHelper::get('whatsapp') }}" class="text-white">
+                                    {{ ConfigHelper::get('whatsapp') }}</a>
                             </h6>
                             <h6><i class="bi bi-instagram"></i> Sosmed&nbsp;<a target="_blank"
-                                    href="https://instagram.com/heystudio.id" class="text-white"> @heystudio.id</a>
+                                    href="https://instagram.com/{{ ConfigHelper::get('instagram') }}" class="text-white">
+                                    {{ '@' . ConfigHelper::get('instagram') }}</a>
                             </h6>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-6 wow fadeInRight" data-wow-duration="0.5s" data-wow-delay="0.25s">
-                    <form id="contact" action="https://heystudio.web.id/kritik-saran" method="post">
-                        <input type="hidden" name="_token" value="KHkJqEevB6IvsZg8DUyQ41fsdwA49wjq3P0ilCex">
+                    <form id="contact" action="#" method="post">
+                        @csrf
                         <h3 class="mb-3">Kritik & Saran</h3>
                         <div class="row">
                             <div class="col-lg-12">
@@ -222,9 +243,6 @@
                                     </button>
                                 </fieldset>
                             </div>
-                        </div>
-                        <div class="contact-dec">
-                            <img src="{{ asset('guest/img/contact-decoration.png"') }} alt="" />
                         </div>
                         <div>
                         </div>

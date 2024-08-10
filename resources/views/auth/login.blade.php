@@ -6,7 +6,8 @@
             <div class="row d-flex justify-content-center align-items-center h-100">
                 <div class="img-left col-lg-6 col-xl-5 wow fadeInLeft" data-wow-duration="1s" data-wow-delay="0.25s">
                     <a href="/">
-                        <img src="{{ asset('/guest/img/logo-hey.png') }}" class="img-fluid" alt="Logo Hey Studio">
+                        <img src="{{ asset('/guest/img/logo-hey.png') }}" class="img-fluid"
+                            alt="Logo {{ ConfigHelper::get('appName') }}">
                     </a>
                 </div>
                 <div class="col-lg-6 col-xl-4 offset-xl-1 wow fadeInRight" data-wow-duration="1s" data-wow-delay="0.25s">

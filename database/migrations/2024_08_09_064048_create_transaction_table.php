@@ -11,8 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('transaction', function (Blueprint $table) {
+        Schema::create('transactions', function (Blueprint $table) {
             $table->id();
+            $table->string('trxId');
+            $table->string('name');
+            $table->string('phone');
+            $table->integer('numberOfPerson');
+            $table->date('date');
+            $table->time('time');
+            $table->integer('basedPerson');
+            $table->integer('basedPrice');
+            $table->integer('additionalPrice');
+            $table->integer('totalPrice');
+            $table->integer('downPayment');
+            $table->text('linkDrive')->nullable();
+            $table->enum('status', ['pending', 'process', 'success', 'failed']);
             $table->timestamps();
         });
     }

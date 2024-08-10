@@ -4,24 +4,21 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="title" content="Hey Studio Tangerang">
+    <meta name="title" content="{{ ConfigHelper::get('appName') }}">
     <meta name="description"
-        content="Hey Studio Tangerang adalah studio foto profesional dengan konsep self photo yang menawarkan layanan fotografi berkualitas di daerah Tangerang. Hubungi kami untuk sesi foto yang indah dan mengesankan.">
-    <meta name="keywords"
-        content="heystudio, hey studio, self photo, self studio, studio tangerang, photo tangerang, hey studio photo, hey studio cisoka">
+        content="{{ ConfigHelper::get('appName') }} adalah studio foto profesional dengan konsep self photo yang menawarkan layanan fotografi berkualitas di daerah Tangerang. Hubungi kami untuk sesi foto yang indah dan mengesankan.">
+    <meta name="keywords" content="self photo, self studio, studio, photo, photo, cisoka">
     <meta name="robots" content="index, follow">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="language" content="English">
 
     <!-- Meta -->
-    <meta property="og:title" content="Hey Studio Tangerang" />
+    <meta property="og:title" content="{{ ConfigHelper::get('appName') }}" />
     <meta property="og:description"
-        content="Hey Studio Tangerang adalah studio foto dengan konsep self photo, pelanggan melakukan permotretan sendiri dengan menggunakan remote." />
-    <meta property="og:image" content="https://heystudio.web.id/assets/img/logo-hey.png" />
-    <meta property="og:url" content="https://heystudio.web.id" />
+        content="{{ ConfigHelper::get('appName') }} adalah studio foto dengan konsep self photo, pelanggan melakukan permotretan sendiri dengan menggunakan remote." />
     <meta property="og:type" content="website" />
 
-    <title>Hey Studio | Self Studio Photo</title>
+    <title>{{ ConfigHelper::get('appName') }} | Self Studio Photo</title>
 
     <!-- Bootstrap core CSS -->
     <link href="{{ asset('/guest//bootstrap.min.css') }}" rel="stylesheet" />
@@ -37,6 +34,7 @@
     <link rel="stylesheet" href="{{ asset('/guest/main.css') }}" />
     <link rel="stylesheet" href="{{ asset('/guest/animated.css') }}" />
 
+    @yield('css')
 </head>
 
 <body style="overflow-x: hidden">
@@ -63,7 +61,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <p>
-                        © Copyright 2024 <a href="#" class="text-decoration-none">{{ config('app.name') }}</a>
+                        © Copyright 2024 <a href="#" class="text-decoration-none">{{ ConfigHelper::get('appName') }}</a>
                     </p>
                 </div>
             </div>
@@ -77,6 +75,7 @@
     <script src="{{ asset('/guest/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('/guest/animation.js') }}"></script>
     <script src="{{ asset('/guest/main.js') }}"></script>
+    @yield('js')
 </body>
 
 </html>

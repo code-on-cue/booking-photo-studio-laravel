@@ -3,9 +3,9 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>@yield('title', 'Selamat Datang') | {{ config('app.name') }}</title><!--begin::Primary Meta Tags-->
+    <title>@yield('title', 'Selamat Datang') | {{ ConfigHelper::get('appName') }}</title><!--begin::Primary Meta Tags-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="title" content="@yield('title', 'Selamat Datang') | {{ config('app.name') }}">
+    <meta name="title" content="@yield('title', 'Selamat Datang') | {{ ConfigHelper::get('appName') }}">
     <meta name="author" content="ColorlibHQ">
     <meta name="description"
         content="AdminLTE is a Free Bootstrap 5 Admin Dashboard, 30 example pages using Vanilla JS.">

@@ -1,41 +1,24 @@
-
 <li class="nav-item">
-    <a href="{{ route('kategori.index') }}" class="nav-link">
-        <i class="nav-icon bi bi-speedometer"></i>
+    <a href="{{ route('transaction.index') }}" class="nav-link">
+        <i class="nav-icon bi bi-list"></i>
         <p>
-            Master Kategori
+            Transaksi
         </p>
     </a>
 </li>
 <li class="nav-item">
-    <a href="{{ route('theme.index') }}" class="nav-link">
-        <i class="nav-icon bi bi-speedometer"></i>
+    <a href="{{ route('transaction.hari-ini') }}" class="nav-link">
+        <i class="nav-icon bi bi-calendar"></i>
         <p>
-            Manajemen Judul
+            Hari Ini
         </p>
     </a>
 </li>
-{{-- <li class="nav-item">
-    <a href="{{ route('ebook.siap-publish') }}" class="nav-link">
-        <i class="nav-icon bi bi-speedometer"></i>
-        <p>
-            Karya Siap Publish
-        </p>
-    </a>
-</li> --}}
 <li class="nav-item">
-    <a href="{{ route('ebook.konfirmasi-pembayaran-list') }}" class="nav-link">
-        <i class="nav-icon bi bi-speedometer"></i>
+    <a href="{{ route('config.index') }}" class="nav-link">
+        <i class="nav-icon bi bi-gear"></i>
         <p>
-            Konfirmasi Pembayaran
+            Pengaturan
         </p>
     </a>
 </li>
-{{-- <li class="nav-item">
-    <a href="{{ route('ebook.butuhreview') }}" class="nav-link">
-        <i class="nav-icon bi bi-speedometer"></i>
-        <p>
-            Butuh Review
-        </p>
-    </a>
-</li> --}}

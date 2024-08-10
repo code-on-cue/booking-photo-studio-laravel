@@ -1,4 +1,14 @@
 <!-- ***** Header Area Start ***** -->
+@php
+    $names = explode(' ', ConfigHelper::get('appName'));
+    $firstName = $names[0];
+    if (count($names) >= 2) {
+        array_shift($names);
+        $lastName = implode(' ', $names);
+    } else {
+        $lastName = '';
+    }
+@endphp
 <header class="header-area header-sticky wow slideInDown" data-wow-duration="0.75s" data-wow-delay="0s">
     <div class="container">
         <div class="row">
@@ -6,26 +16,15 @@
                 <nav class="main-nav">
                     <!-- ***** Logo Start ***** -->
                     <a href="{{ asset('/') }}" class="logo">
-                        <h4>Hey<span>Studio</span></h4>
+                        <h4>
+                            {{ $firstName }}
+                            <span>{{ $lastName }}</span>
+                        </h4>
                     </a>
                     <!-- ***** Logo End ***** -->
                     <!-- ***** Menu Start ***** -->
                     <ul class="nav">
-                        <li class="scroll-to-section">
-                            <a href="#top" class="active">Home</a>
-                        </li>
-                        <li class="scroll-to-section">
-                            <a href="#about">About Us</a>
-                        </li>
-                        <li class="scroll-to-section">
-                            <a href="#services">Services</a>
-                        </li>
-                        <li class="scroll-to-section">
-                            <a href="#contact">Contact</a>
-                        </li>
-                        <li class="scroll-to-section">
-                            <a href="{{ route('login') }}">Login</a>
-                        </li>
+                        @yield('navbar')
                     </ul>
                     <a class="menu-trigger">
                         <span>Menu</span>
