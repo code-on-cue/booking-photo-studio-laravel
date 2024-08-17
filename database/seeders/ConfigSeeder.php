@@ -15,7 +15,7 @@ class ConfigSeeder extends Seeder
     {
         Config::create(
             [
-                'appName' => 'Foto Studio Glam',
+                'appName' => 'Adhie Photo',
 
                 'price' => 70000,
                 'additionalPrice' => 30000,
@@ -29,10 +29,10 @@ class ConfigSeeder extends Seeder
                 'accountNumber' => '043701076329500',
                 'accountHolder' => 'Muhamad Arif Al Mahdi',
 
-                'whatsapp' => '6281386764224',
-                'instagram' => 'heystudio.id',
-                'address' => 'Jl Raya Cisoka - Adiyasa, Kp. Pasanggrahan, Kec. Solear, Kabupaten Tangerang, Banten 15730',
-                'map' => '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15830.120924689692!2d112.79868965!3d-7.2941646!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd7fb003665e2ed%3A0xd237e703c1a71bb1!2sCosyhouse%20Keputih%20Surabaya!5e0!3m2!1sen!2sid!4v1723332605015!5m2!1sen!2sid" width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>'
+                'whatsapp' => '083853430400',
+                'instagram' => 'Adhiephoto',
+                'address' => 'Jl. RA Kartini No.17, Dermo, Kec. Bangil, Pasuruan, Jawa Timur 67153',
+                'map' => '<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3954.7206171407615!2d112.79911527582135!3d-7.6053516751742105!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd7db49b4c16625%3A0xb08a523ca20b0c18!2sJl.%20R.A.Kartini%20No.17%2C%20Latek%20Lor%2C%20Dermo%2C%20Kec.%20Bangil%2C%20Pasuruan%2C%20Jawa%20Timur%2067153!5e0!3m2!1sen!2sid!4v1723912911527!5m2!1sen!2sid" width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>'
             ]
         );
     }

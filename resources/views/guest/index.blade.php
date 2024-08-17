@@ -32,11 +32,11 @@
                                     <em style="display:block">{{ ConfigHelper::get('appName') }}</em>
                                 </h2>
                                 <a href="{{ route('guest.transaction') }}" class="btn btn-lg mt-2 btn-booking">
-                                    <i class="bi bi-calendar-plus"></i> Booking Now
+                                    <i class="bi bi-calendar-plus" style="margin-right: .5rem"></i> Booking Now
                                 </a>
                                 <a href="https://wa.me/{{ ConfigHelper::get('whatsapp') }}"
                                     class="btn btn-lg mt-2 btn-booking">
-                                    <i class="bi bi-whatsapp"></i> Admin
+                                    <i class="bi bi-whatsapp" style="margin-right: .5rem"></i> Admin
                                 </a>
                             </div>
                         </div>
@@ -212,8 +212,8 @@
                                     href="https://wa.me/{{ ConfigHelper::get('whatsapp') }}" class="text-white">
                                     {{ ConfigHelper::get('whatsapp') }}</a>
                             </h6>
-                            <h6><i class="bi bi-instagram"></i> Sosmed&nbsp;<a target="_blank"
-                                    href="https://instagram.com/{{ ConfigHelper::get('instagram') }}" class="text-white">
+                            <h6><i class="bi bi-facebook"></i> Sosmed&nbsp;<a target="_blank"
+                                    href="https://www.facebook.com/{{ ConfigHelper::get('instagram') }}" class="text-white">
                                     {{ '@' . ConfigHelper::get('instagram') }}</a>
                             </h6>
                         </div>
