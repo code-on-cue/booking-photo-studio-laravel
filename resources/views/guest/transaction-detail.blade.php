@@ -13,9 +13,21 @@
     <li class="scroll-to-section">
         <a href="{{ url('/') }}" class="active">Home</a>
     </li>
-    <li class="scroll-to-section">
-        <a href="{{ route('login') }}">Admin Login</a>
-    </li>
+    @guest
+        <li class="scroll-to-section">
+            <a href="{{ route('login') }}">Login</a>
+        </li>
+    @else
+        <li class="scroll-to-section">
+            <a href="{{ route('booking.history') }}">Riwayat Booking</a>
+        </li>
+        <li style="padding: 0;padding-left:12px;padding-right:12px;padding-bottom:12px;">
+            <form action="{{ route('logout-action') }}" method="post">
+                @csrf
+                <button style="border:0;background:transparent;line-height:25px;height:auto">Sign out</button>
+            </form>
+        </li>
+    @endguest
 @endsection
 @section('content')
     <div class="banner-bookings wow fadeIn" id="top" data-wow-duration="1s" data-wow-delay="0.5s">
@@ -72,8 +84,17 @@
                                                 </tr>
                                             </table>
                                         </div>
-                                        <hr>
-                                        <div class="alert alert-warning">
+                                        @if ($transaction->status === \App\Models\Transaction::STATUS_PENDING)
+                                            <hr>
+                                            <a href="{{ $transaction->snapToken }}" target="_blank"
+                                                class="btn btn-success btn-md d-block mb-4" id="pay-button">Bayar
+                                                Sekarang</a>
+
+                                            <a href="{{ route('jadwal.payment', $transaction->trxId) }}"
+                                                class="btn btn-primary btn-md d-block mb-4" id="pay-button">Check Status</a>
+                                        @endif
+
+                                        {{-- <div class="alert alert-warning">
                                             Silahkan lakukan pembayaran DP sebesar <span class="badge bg-danger">Rp.
                                                 {{ $transaction->currency('downPayment') }}</span> ke rekening
                                             {{ ConfigHelper::get('accountSource') }}
@@ -81,19 +102,19 @@
                                                 {{ ConfigHelper::get('accountHolder') }}.</strong>
                                             <div onclick="copy()" class="badge bg-info" style="cursor: pointer">copy
                                                 rekening</div>
-                                        </div>
-                                        <div class="mb-3 d-flex align-items-center">
+                                        </div> --}}
+                                        {{-- <div class="mb-3 d-flex align-items-center">
                                             <p>Syarat & Ketentuan:&nbsp;</p>
                                             <button data-bs-toggle="modal" data-bs-target="#sk" type="button"
                                                 class="btn badge bg-primary">baca</button>
-                                        </div>
+                                        </div> --}}
                                         <div class="text-center">
                                             @if ($transaction->status == 'pending')
-                                                <a target="_blank"
+                                                {{-- <a target="_blank"
                                                     href="https://wa.me/{{ ConfigHelper::get('whatsapp') }}?text=Halo kak, saya sudah melakukan pembayaran DP untuk booking tanggal {{ $transaction->date }} jam {{ $transaction->time }} dengan nomor tiket {{ $transaction->trxId }}, mohon untuk dikonfirmasi. Terima kasih"
                                                     class="btn btn-primary mb-2"><i class="bi bi-whatsapp"></i> Konfirmasi
-                                                    ke Admin</a>
-                                                <div>Jika dalam 15 menit tidak melakukan pembayaran, maka status booking
+                                                    ke Admin</a> --}}
+                                                <div>Jika dalam 1 hari tidak melakukan pembayaran, maka status booking
                                                     akan dicancel.</div>
                                             @endif
                                         </div>

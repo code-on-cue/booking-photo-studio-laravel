@@ -14,6 +14,16 @@
         </p>
     </a>
 </li>
+
+<li class="nav-item">
+    <a href="{{ route('box.index') }}" class="nav-link">
+        <i class="nav-icon bi bi-bell"></i>
+        <p>
+            Kritik Saran
+        </p>
+    </a>
+</li>
+
 <li class="nav-item">
     <a href="{{ route('config.index') }}" class="nav-link">
         <i class="nav-icon bi bi-gear"></i>

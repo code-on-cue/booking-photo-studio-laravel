@@ -19,6 +19,8 @@ class Transaction extends Model
 
     protected $fillable = [
         'trxId',
+        'userId',
+        'snapToken',
         'name',
         'phone',
         'numberOfPerson',

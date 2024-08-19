@@ -8,9 +8,21 @@
     <li class="scroll-to-section">
         <a href="{{ url('/') }}" class="active">Home</a>
     </li>
-    <li class="scroll-to-section">
-        <a href="{{ route('login') }}">Login</a>
-    </li>
+    @guest
+        <li class="scroll-to-section">
+            <a href="{{ route('login') }}">Login</a>
+        </li>
+    @else
+        <li class="scroll-to-section">
+            <a href="{{ route('booking.history') }}">Riwayat Booking</a>
+        </li>
+        <li style="padding: 0;padding-left:12px;padding-right:12px;padding-bottom:12px;">
+            <form action="{{ route('logout-action') }}" method="post">
+                @csrf
+                <button style="border:0;background:transparent;line-height:25px;height:auto">Sign out</button>
+            </form>
+        </li>
+    @endguest
 @endsection
 @section('content')
     <div class="banner-bookings wow fadeIn" id="top" data-wow-duration="1s" data-wow-delay="0.5s">
@@ -27,16 +39,19 @@
                                         <h3 class="card-title text-center py-2">
                                             Form Booking
                                         </h3>
+
+                                        <input type="hidden" name="userId" value="{{ auth()->user()->id }}" />
                                         <div class="form-floating mb-3">
                                             <input type="text" class="form-control " name="name" id="nama"
-                                                value="" placeholder="Admin" />
+                                                placeholder="Admin" value="{{ auth()->user()->name }}" />
                                             <label for="nama">Nama Lengkap*</label>
                                             <div class="invalid-feedback">
                                             </div>
                                         </div>
                                         <div class="form-floating mb-3">
                                             <input type="number" class="form-control " name="phone" id="whatsapp"
-                                                value="" placeholder="Whatsapp" pattern="^08\d{9,}$" required />
+                                                placeholder="Whatsapp" pattern="^08\d{9,}$" required
+                                                value="{{ auth()->user()->phone }}" />
                                             <label for="whatsapp">Whatsapp*</label>
                                             <small>*Format penulisan whatsapp: 6281389900277</small>
                                             <div class="invalid-feedback">

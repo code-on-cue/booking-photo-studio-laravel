@@ -13,9 +13,21 @@
     <li class="scroll-to-section">
         <a href="#contact">Contact</a>
     </li>
-    <li class="scroll-to-section">
-        <a href="{{ route('login') }}">Login</a>
-    </li>
+    @guest
+        <li class="scroll-to-section">
+            <a href="{{ route('login') }}">Login</a>
+        </li>
+    @else
+        <li class="scroll-to-section">
+            <a href="{{ route('booking.history') }}">Riwayat Booking</a>
+        </li>
+        <li style="padding: 0;padding-left:12px;padding-right:12px;padding-bottom:12px;">
+            <form action="{{ route('logout-action') }}" method="post">
+                @csrf
+                <button style="border:0;background:transparent;line-height:25px;height:auto">Sign out</button>
+            </form>
+        </li>
+    @endguest
 @endsection
 
 @section('content')
@@ -36,7 +48,7 @@
                                 </a>
                                 <a href="https://wa.me/{{ ConfigHelper::get('whatsapp') }}"
                                     class="btn btn-lg mt-2 btn-booking">
-                                    <i class="bi bi-whatsapp" style="margin-right: .5rem"></i> Admin
+                                    <i class="bi bi-whatsapp" style="margin-right: .5rem"></i> Whatsapp
                                 </a>
                             </div>
                         </div>
@@ -200,7 +212,7 @@
         </div>
     </div>
 
-    <div id="contact" class="contact-us section">
+    <div id="contact-container" class="contact-us section">
         <div class="container">
             <div class="row">
                 <div class="col-lg-6 align-self-center wow fadeInLeft" data-wow-duration="0.5s" data-wow-delay="0.25s">
@@ -213,7 +225,8 @@
                                     {{ ConfigHelper::get('whatsapp') }}</a>
                             </h6>
                             <h6><i class="bi bi-facebook"></i> Sosmed&nbsp;<a target="_blank"
-                                    href="https://www.facebook.com/{{ ConfigHelper::get('instagram') }}" class="text-white">
+                                    href="https://www.facebook.com/{{ ConfigHelper::get('instagram') }}"
+                                    class="text-white">
                                     {{ '@' . ConfigHelper::get('instagram') }}</a>
                             </h6>
                         </div>
@@ -251,4 +264,35 @@
             </div>
         </div>
     </div>
+@endsection
+
+
+@section('js')
+    <script>
+        // insert kritik & saran with fetch 
+        document.getElementById('contact').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+
+            fetch('{{ route('guest.contact') }}', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Kritik & Saran Terkirim!');
+                        this.reset();
+                    } else {
+                        alert('Gagal mengirim kritik & saran! ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        });
+    </script>
 @endsection

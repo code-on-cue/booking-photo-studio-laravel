@@ -3,8 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ConfigHelper;
+use App\Helpers\MidtransHelper;
+use App\Models\Box;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class AppController extends Controller
 {
@@ -16,6 +20,35 @@ class AppController extends Controller
     public function transaction()
     {
         return view('guest.transaction');
+    }
+
+    public function contact(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'nama' => 'required',
+            'kritik_saran' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'invalid',
+                'errors' => $validator->errors()
+            ], 400);
+        }
+
+        if (Box::create($validator->validated())) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Berhasil mengirim pesan'
+            ]);
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Gagal mengirim pesan',
+            'errors' => []
+        ], 400);
     }
 
     public function booked(Request $request)
@@ -75,6 +108,7 @@ class AppController extends Controller
     {
         // VALIDATION DATA
         $request->validate([
+            'userId'        => 'required',
             'name'           => 'required',
             'phone'          => 'required',
             'numberOfPerson' => 'required',
@@ -98,11 +132,21 @@ class AppController extends Controller
         $payload['totalPrice'] = $tambahanOrang <= 0 ? $harga : $tambahanOrang * $additionalPerson + $harga;
         $payload['basedPrice'] = $harga;
         $payload['additionalPrice'] = $payload['totalPrice'] - $harga;
-        $payload['downPayment'] = floor($payload['totalPrice'] / 2) - (floor($payload['totalPrice'] / 2) % 1000);
+        $payload['downPayment'] = 0;
         $payload['basedPerson'] = $maximumPerson;
+
+        // ATUR TRANSAKSI
+        DB::beginTransaction();
 
         // MASUKKAN KE DATABASE
         if ($transaction = Transaction::create($payload)) {
+
+            // MIDTRANS INTEGRATION
+            $response = MidtransHelper::getSnapToken($transaction->trxId, $transaction->totalPrice);
+            $transaction->update(['snapToken' => $response['redirect_url']]);
+
+            DB::commit();
+
             return redirect()->route('jadwal.payment', $transaction->trxId);
         }
 
@@ -114,7 +158,23 @@ class AppController extends Controller
     public function transactionDetail($trxId)
     {
         $transaction = Transaction::where(['trxId' => $trxId])->first();
+
+        if ($transaction->snapToken && $transaction->status == Transaction::STATUS_PENDING) {
+            $isCompleted = MidtransHelper::checkPayment($transaction->trxId);
+            if ($isCompleted) {
+                $transaction->update(['status' => Transaction::STATUS_SUCCESS]);
+            }
+        }
+
         if (!$transaction) return abort(404);
         return view('guest.transaction-detail', compact('transaction'));
+    }
+
+    public function transactionHistories()
+    {
+        $transactions = Transaction::where('status', '!=', Transaction::STATUS_FAILED)
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+        return view('guest.transaction-histories', compact('transactions'));
     }
 }
