@@ -1,0 +1,22 @@
+@startuml
+|Client|
+start
+:Registrasi di website;
+:Login ke akun;
+
+:Masuk ke menu Booking;
+:Isi jumlah orang;
+:Pilih tanggal dan jam booking;
+
+:Melakukan pembayaran melalui Midtrans;
+:Datang sesuai jadwal;
+
+|Admin|
+:Konfirmasi kehadiran client;
+:Isikan link Google Drive hasil foto;
+
+|Client|
+:Unduh hasil foto;
+:Booking selesai;
+stop
+@enduml
