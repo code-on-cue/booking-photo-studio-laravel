@@ -52,7 +52,12 @@
 
 
                     <div class="row justify-content-center">
-                        <div class="col-md-8 col-lg-6">
+                        <div class="col-md-6 d-none d-md-block">
+                            <div
+                                style="background: url('{{ asset('storage/' . $type->banner) }}') no-repeat center center; background-size: cover;width:100%; height: 100%;">
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-12">
                             <div class="card shadow wow fadeInLeft" data-wow-duration="1s" data-wow-delay="0.5s">
                                 <div class="card-body">
                                     <form action="{{ route('jadwal.store') }}" method="post"
