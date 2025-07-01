@@ -26,6 +26,7 @@
                             <tr>
                                 <td>#</td>
                                 <td>TRX ID</td>
+                                <td>Tipe</td>
                                 <td>Tanggal</td>
                                 <td>Pemesan</td>
                                 <td>Status</td>
@@ -40,6 +41,7 @@
                                         {{ ($collection->currentPage() - 1) * $collection->perPage() + $loop->iteration }}
                                     </td>
                                     <td>#{{ $item->trxId }}</td>
+                                    <td>{{ $item->type->name }}</td>
                                     <td>{{ $item->date }}, {{ $item->time }}</td>
                                     <td>{{ $item->name }}</td>
                                     <td>{{ $item->status }}</td>

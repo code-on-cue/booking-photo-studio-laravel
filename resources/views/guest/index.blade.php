@@ -5,10 +5,10 @@
         <a href="#top" class="active">Home</a>
     </li>
     <li class="scroll-to-section">
-        <a href="#about">About Us</a>
+        <a href="#services">Services</a>
     </li>
     <li class="scroll-to-section">
-        <a href="#services">Services</a>
+        <a href="#about">About Us</a>
     </li>
     <li class="scroll-to-section">
         <a href="#contact">Contact</a>
@@ -43,9 +43,9 @@
                                     Abadikan Momen Bersama di
                                     <em style="display:block">{{ ConfigHelper::get('appName') }}</em>
                                 </h2>
-                                <a href="{{ route('guest.transaction') }}" class="btn btn-lg mt-2 btn-booking">
+                                {{-- <a href="{{ route('guest.transaction') }}" class="btn btn-lg mt-2 btn-booking">
                                     <i class="bi bi-calendar-plus" style="margin-right: .5rem"></i> Booking Now
-                                </a>
+                                </a> --}}
                                 <a href="https://wa.me/{{ ConfigHelper::get('whatsapp') }}"
                                     class="btn btn-lg mt-2 btn-booking">
                                     <i class="bi bi-whatsapp" style="margin-right: .5rem"></i> Whatsapp
@@ -62,6 +62,32 @@
             </div>
         </div>
     </div>
+
+    <div id="services" class="container py-5">
+        <div class="row text-center mb-4">
+            <h2 class="fw-bold">Jenis Layanan Kami</h2>
+            <p class="text-muted">Pilih jenis sesi foto sesuai kebutuhanmu</p>
+        </div>
+        <div class="row">
+            @foreach ($types as $type)
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 shadow-sm">
+                        <div style="height: 500px; overflow: hidden;">
+                            <img src="{{ asset('storage/' . $type->banner) }}" class="card-img-top" alt="{{ $type->name }}">
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">{{ $type->name }}</h5>
+                            <p class="card-text">{!! Str::limit(nl2br(e($type->terms_and_conditions)), 100) !!}</p>
+                            <a href="{{ route('guest.transaction', ['type' => $type->slug]) }}"
+                                class="btn btn-primary w-100"><i class="bi bi-calendar-plus"></i> Booking
+                                {{ $type->name }}</a>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </div>
+
 
     <div id="about" class="about-us section mt-3">
         <div class="container">
@@ -148,7 +174,7 @@
             </div>
         </div>
     </div>
-
+{{-- 
     <div id="services" class="our-services section">
         <div class="container">
             <div class="row align-items-center">
@@ -210,7 +236,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 
     <div id="contact-container" class="contact-us section">
         <div class="container">

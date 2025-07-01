@@ -19,6 +19,7 @@ class Transaction extends Model
 
     protected $fillable = [
         'trxId',
+        'typeId',
         'userId',
         'snapToken',
         'name',
@@ -33,7 +34,18 @@ class Transaction extends Model
         'downPayment',
         'linkDrive',
         'status',
+        'moreDetails',
     ];
+
+    protected $casts = [
+        'moreDetails' => 'array',
+        'date' => 'date',
+    ];
+
+    public function type()
+    {
+        return $this->belongsTo(Type::class, 'typeId');
+    }
 
     public function currency($column)
     {

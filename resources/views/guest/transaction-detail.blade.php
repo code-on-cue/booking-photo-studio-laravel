@@ -8,7 +8,21 @@
     } else {
         $lastName = '';
     }
+
+    $details = $transaction->moreDetails ?? [];
+    $typeDetails = $type->moreDetails ?? [];
+
+    function findLabel($list, $key, $value)
+    {
+        foreach ($list as $item) {
+            if (($item[$key] ?? null) === $value) {
+                return $item['name'] ?? ($item['type'] ?? $value);
+            }
+        }
+        return $value;
+    }
 @endphp
+
 @section('navbar')
     <li class="scroll-to-section">
         <a href="{{ url('/') }}" class="active">Home</a>
@@ -61,19 +75,66 @@
                                                     <td>{{ $transaction->date }}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Sesi</td>
-                                                    <td>{{ date('H:i', strtotime($transaction->time)) }}</td>
+                                                    <td>Jenis Booking</td>
+                                                    <td>{{ $type->name }}</td>
                                                 </tr>
-                                                <tr>
-                                                    <td>Jumlah Orang</td>
-                                                    <td>{{ $transaction->numberOfPerson }} Orang</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Biaya</td>
-                                                    <td>Rp.
-                                                        {{ $transaction->currency('basedPrice') }}/{{ $transaction->basedPerson }}
-                                                        Orang</td>
-                                                </tr>
+                                                @if ($type->slug === 'portrait')
+                                                    <tr>
+                                                        <td>Sesi</td>
+                                                        <td>{{ date('H:i', strtotime($transaction->time)) }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Jumlah Orang</td>
+                                                        <td>{{ $transaction->numberOfPerson }} Orang</td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td>Biaya</td>
+                                                        <td>Rp.
+                                                            {{ $transaction->currency('basedPrice') }}/{{ $transaction->basedPerson }}
+                                                            Orang</td>
+                                                    </tr>
+                                                @elseif ($type->slug === 'keluarga')
+                                                    <tr>
+                                                        <td>Jumlah Orang</td>
+                                                        <td>{{ $transaction->numberOfPerson }} Orang</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Jenis Lokasi</td>
+                                                        <td>
+                                                            {{ findLabel($typeDetails['locationOptions'] ?? [], 'type', $details['location_type'] ?? '-') }}
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td>Biaya</td>
+                                                        <td>Rp.
+                                                            {{ $transaction->currency('basedPrice') }}/{{ $transaction->basedPerson }}
+                                                            Orang</td>
+                                                    </tr>
+                                                @elseif ($type->slug === 'wedding')
+                                                    <tr>
+                                                        <td>Paket</td>
+                                                        <td>
+                                                            {{ findLabel($typeDetails['packageOptions'] ?? [], 'name', $details['package'] ?? '-') }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Lokasi</td>
+                                                        <td>
+                                                            {{ array_key_exists('location', $details) ? $details['location'] : '-' }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Estimasi Durasi</td>
+                                                        <td>{{ $typeDetails['durationEstimate'] ?? '-' }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Biaya</td>
+                                                        <td>Rp.
+                                                            {{ $transaction->currency('basedPrice') }}</td>
+                                                    </tr>
+                                                @endif
                                                 <tr>
                                                     <td>Biaya Tambahan</td>
                                                     <td>Rp. {{ $transaction->currency('additionalPrice') }}</td>
@@ -136,18 +197,9 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <ol class="list-group list-group-numbered">
-                        <li class="list-group-item">Biaya
-                            {{ \App\Helpers\StrHelper::currency(ConfigHelper::get('price'), 'Rp') }}/{{ ConfigHelper::get('maximumPerson') }}
-                            orang</li>
-                        <li class="list-group-item">Tambahan orang
-                            {{ \App\Helpers\StrHelper::currency(ConfigHelper::get('additionalPrice'), 'Rp') }}/orang</li>
-                        <li class="list-group-item">25 menit sesi foto</li>
-                        <li class="list-group-item">5 menit persiapan & cetak foto</li>
-                        <li class="list-group-item">Free Cetak 2 foto</li>
-                        <li class="list-group-item">Semua soft file akan dikirim melalui google drive</li>
-                        <li class="list-group-item">Datang 15 menit sebelum sesi dimulai</li>
-                    </ol>
+                    @foreach (explode("\n", $type->terms_and_conditions) as $item)
+                        <li class="list-group-item">{{ trim($item) }}</li>
+                    @endforeach
                 </div>
             </div>
         </div>

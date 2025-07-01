@@ -6,6 +6,8 @@ use App\Helpers\ConfigHelper;
 use App\Helpers\MidtransHelper;
 use App\Models\Box;
 use App\Models\Transaction;
+use App\Models\Type;
+use App\Services\Booking\BookingServiceFactory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -14,12 +16,15 @@ class AppController extends Controller
 {
     public function index()
     {
-        return view('guest.index');
+        $types = Type::all();
+        return view('guest.index', compact('types'));
     }
 
-    public function transaction()
+    public function transaction(Request $request, string $type)
     {
-        return view('guest.transaction');
+        $type = Type::where('slug', $type)->firstOrFail();
+
+        return view('guest.transaction', compact('type'));
     }
 
     public function contact(Request $request)
@@ -53,48 +58,68 @@ class AppController extends Controller
 
     public function booked(Request $request)
     {
+        $request->validate([
+            'tanggal' => 'required|date',
+            'typeId'  => 'required|exists:types,id',
+        ]);
+
+        $type = Type::findOrFail($request->get('typeId'));
+        $slug = $type->slug;
+
+        // Jika tipe tidak menggunakan sesi waktu (wedding), langsung balikin kosong
+        if ($slug === 'wedding') {
+            return response()->json([
+                "is_booked" => [],
+                "is_passed" => [],
+                "sesi" => [],
+            ]);
+        }
+
         $date = $request->get('tanggal');
 
-        $jamBuka = ConfigHelper::get('openStore');
-        $jamTutup = ConfigHelper::get('closeStore');
+        $jamBuka = $type->moreDetails['openStore'] ?? '09:00';
+        $jamTutup = $type->moreDetails['closeStore'] ?? '21:00';
+        $duration = $type->moreDetails['duration'] ?? 30;
+        $istirahat = explode('|', $type->moreDetails['breakTime'] ?? '');
 
-        $istirahat = explode('|', ConfigHelper::get('breakTime'));
-
-        $startTime = strtotime(date($date . ' ' . $jamBuka));
-        $currentTime = strtotime(date('Y-m-d H:i'));
-        $closedTime = strtotime(date($date . ' ' . $jamTutup));
-        $duration = ConfigHelper::get('duration');
+        $startTime = strtotime("$date $jamBuka");
+        $closedTime = strtotime("$date $jamTutup");
+        $currentTime = strtotime(now()->format('Y-m-d H:i'));
 
         $listTime = [];
         $listBooked = [];
         $listPassed = [];
+
+        // Ambil semua booking hari itu
+        $bookedMap = Transaction::where('date', $date)
+            ->where('typeId', $type->id)
+            ->where('status', '!=', Transaction::STATUS_FAILED)
+            ->get()
+            ->keyBy('time');
+
         while ($startTime <= $closedTime) {
             $timeFormat = date('H:i', $startTime);
+            $timeFormatDatabase = date('H:i:00', $startTime);
 
-            // SKIP JIKA JAM ISTIRAHAT
             if (!in_array($timeFormat, $istirahat)) {
-                // JIKA TELAH TERDAFTAR
-                $booked = Transaction::where('time',  $timeFormat)
-                    ->where('date', $date)
-                    ->where('status', '!=', Transaction::STATUS_FAILED)
-                    ->first();
-                if ($booked) {
+                // Sudah di-booking
+                if ($bookedMap->has(key: $timeFormatDatabase)) {
                     $listBooked[] = [
-                        'fullname' => $booked->name,
+                        'fullname' => $bookedMap[$timeFormatDatabase]->name,
                         'jam' => $timeFormat
                     ];
                 }
 
-                // JIKA SUDAH TERLEWAT
-                $isPassed = $startTime < $currentTime;
-                if ($isPassed) {
+                // Waktu sudah lewat
+                if ($startTime < $currentTime) {
                     $listPassed[] = $timeFormat;
                 }
+
                 $listTime[] = $timeFormat;
             }
 
-            // TAMBAHKAN DURASI WAKTU
-            $startTime = strtotime(date($date . ' H:i', $startTime) . " + {$duration} minutes");
+            // Tambah durasi
+            $startTime = strtotime("+{$duration} minutes", $startTime);
         }
 
         return response()->json([
@@ -104,23 +129,16 @@ class AppController extends Controller
         ]);
     }
 
+
     public function transactionStore(Request $request)
     {
-        // VALIDATION DATA
-        $request->validate([
-            'userId'        => 'required',
-            'name'           => 'required',
-            'phone'          => 'required',
-            'numberOfPerson' => 'required',
-            'date'           => 'required',
-            'time'           => 'required'
-        ]);
+        $type = Type::findOrFail($request->typeId);
+        $service = BookingServiceFactory::resolveService($type->slug);
 
-        // VARIABLE 
-        // MIGRATE INI KE TABLE
-        $harga = ConfigHelper::get('price');
-        $additionalPerson = ConfigHelper::get('additionalPrice');
-        $maximumPerson = ConfigHelper::get('maximumPerson');
+        $service->validate($request, $type);
+        $harga = $service->getBasedPrice($request, $type);
+        $totalPrice = $service->calculatePrice($request, $type);
+        $maximumPerson = $service->getMaximumPerson($request, $type);
 
         // PREPARE PAYLOAD
         $payload = $request->all();
@@ -128,12 +146,19 @@ class AppController extends Controller
         $payload['status'] = Transaction::STATUS_PENDING;
 
         // HITUNG HARGA
-        $tambahanOrang = $request->numberOfPerson - $maximumPerson;
-        $payload['totalPrice'] = $tambahanOrang <= 0 ? $harga : $tambahanOrang * $additionalPerson + $harga;
+        $payload['totalPrice'] = $totalPrice;
         $payload['basedPrice'] = $harga;
         $payload['additionalPrice'] = $payload['totalPrice'] - $harga;
         $payload['downPayment'] = 0;
         $payload['basedPerson'] = $maximumPerson;
+
+        // SIMPAN DETAIL TAMBAHAN
+        $payload['moreDetails'] = $request->all();
+
+        if (!isset($payload['numberOfPerson'])) {
+            // Untuk wedding, tidak ada jumlah orang
+            $payload['numberOfPerson'] = 0;
+        }
 
         // ATUR TRANSAKSI
         DB::beginTransaction();
@@ -159,15 +184,22 @@ class AppController extends Controller
     {
         $transaction = Transaction::where(['trxId' => $trxId])->first();
 
+        if (!$transaction) return abort(404);
+
         if ($transaction->snapToken && $transaction->status == Transaction::STATUS_PENDING) {
             $isCompleted = MidtransHelper::checkPayment($transaction->trxId);
             if ($isCompleted) {
-                $transaction->update(['status' => Transaction::STATUS_SUCCESS]);
+                $transaction->update([
+                    'downPayment' => $transaction->totalPrice,
+                    'status' => Transaction::STATUS_SUCCESS
+                ]);
             }
         }
 
-        if (!$transaction) return abort(404);
-        return view('guest.transaction-detail', compact('transaction'));
+        $type = $transaction->type;
+
+
+        return view('guest.transaction-detail', compact('transaction', 'type'));
     }
 
     public function transactionHistories()

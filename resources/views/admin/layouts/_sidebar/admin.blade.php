@@ -25,6 +25,15 @@
 </li>
 
 <li class="nav-item">
+    <a href="{{ route('type.index') }}" class="nav-link">
+        <i class="nav-icon bi bi-box"></i>
+        <p>
+            Tipe
+        </p>
+    </a>
+</li>
+
+<li class="nav-item">
     <a href="{{ route('config.index') }}" class="nav-link">
         <i class="nav-icon bi bi-gear"></i>
         <p>

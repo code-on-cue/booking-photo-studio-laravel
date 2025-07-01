@@ -28,7 +28,29 @@
     <div class="banner-bookings wow fadeIn" id="top" data-wow-duration="1s" data-wow-delay="0.5s">
         <div class="container py-5">
             <div class="row">
-                <div class="col-lg-12">
+                <div class="col-lg-12">{{-- Error Display --}}
+                    @if (session('error'))
+                        <div class="alert alert-danger">
+                            {{ session('error') }}
+                        </div>
+                    @endif
+
+                    @if ($errors->any())
+                        <div class="row justify-content-center">
+                            <div class="col-md-10">
+                                <div class="alert alert-danger">
+                                    <strong>Terjadi kesalahan:</strong>
+                                    <ul class="mb-0 mt-2">
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+
+
                     <div class="row justify-content-center">
                         <div class="col-md-8 col-lg-6">
                             <div class="card shadow wow fadeInLeft" data-wow-duration="1s" data-wow-delay="0.5s">
@@ -37,9 +59,10 @@
                                         onsubmit="return confirm('Yakin ingin memesan ?')">
                                         @csrf
                                         <h3 class="card-title text-center py-2">
-                                            Form Booking
+                                            Form Booking - {{ $type->name }}
                                         </h3>
 
+                                        <input type="hidden" name="typeId" value="{{ $type->id }}" />
                                         <input type="hidden" name="userId" value="{{ auth()->user()->id }}" />
                                         <div class="form-floating mb-3">
                                             <input type="text" class="form-control " name="name" id="nama"
@@ -57,26 +80,69 @@
                                             <div class="invalid-feedback">
                                             </div>
                                         </div>
-                                        <div class="form-floating mb-3">
-                                            <input type="number" class="form-control " name="numberOfPerson" id="orang"
-                                                value="" placeholder="Jumlah Orang" min="1" max="20" />
-                                            <label for="orang">Jumlah Orang*</label>
-                                            <div class="invalid-feedback">
+                                        @if ($type->slug === 'portrait')
+                                            <div class="form-floating mb-3">
+                                                <input type="number" class="form-control" name="numberOfPerson"
+                                                    id="orang" value="" placeholder="Jumlah Orang" min="1"
+                                                    max="20" />
+                                                <label for="orang">Jumlah Orang*</label>
                                             </div>
-                                        </div>
-                                        <div class="form-floating mb-3 w-100">
-                                            <div id="dtpc" class="w-100" style="width: 100% !important"></div>
-                                        </div>
-                                        <div class="mb-3">
-                                            <div class="text-center">
-                                                <div id="loading" class="d-none spinner-border text-primary"
-                                                    role="status">
-                                                    <span class="visually-hidden">Loading...</span>
-                                                </div>
+
+                                            {{-- Datepicker dan sesi jam --}}
+                                            @include('guest.partials.sesi-booking')
+                                        @elseif ($type->slug === 'wedding')
+                                            <div class="form-floating mb-3">
+                                                <select class="form-select" name="package" required>
+                                                    <option value="">-- Pilih Paket --</option>
+                                                    @foreach ($type->moreDetails['packageOptions'] as $package)
+                                                        <option value="{{ $package['name'] }}">
+                                                            {{ $package['name'] }} -
+                                                            Rp{{ number_format($package['price']) }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                                <label>Paket Wedding</label>
                                             </div>
-                                            <div id="sesi_booking"><i>Pilih tanggal dulu...</i></div>
-                                            <input type="hidden" name="date" id="tgl_booking" value="2024-08-09">
-                                        </div>
+
+                                            <div class="form-floating mb-3">
+                                                <select class="form-select" name="location" required>
+                                                    <option value="">-- Pilih Lokasi --</option>
+                                                    @foreach ($type->moreDetails['locationSurcharge'] as $loc => $charge)
+                                                        <option value="{{ $loc }}">
+                                                            {{ $loc }}
+                                                            {{ $charge > 0 ? '(+Rp' . number_format($charge) . ')' : '(Gratis)' }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                                <label>Lokasi</label>
+                                            </div>
+
+                                            <div class="form-floating mb-3">
+                                                <input type="date" name="date" class="form-control" required>
+                                                <label>Tanggal Acara</label>
+                                            </div>
+                                        @elseif ($type->slug === 'keluarga')
+                                            <div class="form-floating mb-3">
+                                                <input type="number" class="form-control" name="numberOfPerson"
+                                                    placeholder="Jumlah Orang" required>
+                                                <label>Jumlah Orang*</label>
+                                            </div>
+
+                                            <div class="form-floating mb-3">
+                                                <select class="form-select" name="location_type" required>
+                                                    <option value="">-- Pilih Tipe Lokasi --</option>
+                                                    @foreach ($type->moreDetails['locationOptions'] as $opt)
+                                                        <option value="{{ $opt['type'] }}">{{ $opt['type'] }} -
+                                                            Rp{{ number_format($opt['price']) }}</option>
+                                                    @endforeach
+                                                </select>
+                                                <label>Tipe Lokasi</label>
+                                            </div>
+
+                                            {{-- Datepicker dan sesi jam --}}
+                                            @include('guest.partials.sesi-booking')
+                                        @endif
+
                                         <div class="mb-3">
                                         </div>
                                         {{-- <div class="mb-3">
@@ -112,15 +178,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <ol class="list-group list-group-numbered">
-                        <li class="list-group-item">Biaya 75K/2 orang</li>
-                        <li class="list-group-item">Tambahan orang 30K/orang</li>
-                        <li class="list-group-item">25 menit sesi foto</li>
-                        <li class="list-group-item">5 menit persiapan & cetak foto</li>
-                        <li class="list-group-item">Free Cetak 2 foto</li>
-                        <li class="list-group-item">Semua soft file akan dikirim melalui google drive</li>
-                        <li class="list-group-item">Datang 15 menit sebelum sesi dimulai</li>
-                    </ol>
+                    {!! nl2br(e($type->terms_and_conditions)) !!}
                 </div>
             </div>
         </div>
@@ -161,7 +219,8 @@
                 url: "{{ route('jadwal.booked') }}",
                 type: 'GET',
                 data: {
-                    tanggal
+                    tanggal,
+                    typeId: "{{ $type->id }}"
                 },
                 success: function(data) {
                     const {

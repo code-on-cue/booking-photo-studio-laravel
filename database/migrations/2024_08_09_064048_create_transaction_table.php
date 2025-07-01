@@ -13,13 +13,14 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('typeId')->references('id')->on('types');
             $table->foreignId('userId')->references('id')->on('users');
             $table->string('trxId');
             $table->string('name');
             $table->string('phone');
             $table->integer('numberOfPerson');
             $table->date('date');
-            $table->time('time');
+            $table->time('time')->nullable();
             $table->integer('basedPerson');
             $table->integer('basedPrice');
             $table->integer('additionalPrice');
@@ -28,6 +29,8 @@ return new class extends Migration
             $table->text('linkDrive')->nullable();
             $table->string('snapToken')->nullable();
             $table->enum('status', ['pending', 'process', 'success', 'failed']);
+
+            $table->json('moreDetails')->nullable();
             $table->timestamps();
         });
     }

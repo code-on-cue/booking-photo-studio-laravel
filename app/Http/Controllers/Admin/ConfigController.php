@@ -20,13 +20,6 @@ class ConfigController extends Controller
         $config = Config::first();
         $request->validate([
             'appName' => 'required',
-            'price' => 'required',
-            'additionalPrice' => 'required',
-            'maximumPerson' => 'required',
-            'openStore' => 'required',
-            'closeStore' => 'required',
-            'breakTime' => 'required',
-            'duration' => 'required',
             'accountSource' => 'required',
             'accountNumber' => 'required',
             'accountHolder' => 'required',
