@@ -1,19 +1,32 @@
 @startuml
 |Client|
 start
-:Registrasi di website;
-:Login ke akun;
-
+:Registrasi / Login;
 :Masuk ke menu Booking;
-:Isi jumlah orang;
-:Pilih tanggal dan jam booking;
+:Memilih jenis booking (portrait / wedding / keluarga);
 
-:Melakukan pembayaran melalui Midtrans;
+if (Tipe: Portrait / Keluarga?) then (Ya)
+  :Isi jumlah orang;
+  :Pilih tanggal & jam;
+else (Wedding)
+  :Pilih paket wedding;
+  :Pilih lokasi;
+endif
+
+:Melakukan pembayaran via Midtrans;
+
 :Datang sesuai jadwal;
-
 |Admin|
 :Konfirmasi kehadiran client;
-:Isikan link Google Drive hasil foto;
+
+if (Tipe: Wedding?) then (Ya)
+  :Lakukan pemotretan di lokasi;
+  :Edit & finalisasi foto/video;
+else
+  :Pemotretan di studio;
+endif
+
+:Isi link Google Drive hasil foto;
 
 |Client|
 :Unduh hasil foto;
