@@ -57,6 +57,11 @@ class TypeController extends Controller
             'moreDetails'
         );
 
+        // Convert 'moreDetails' to JSON if it's provided
+        if ($request->has('moreDetails')) {
+            $payload['moreDetails'] = json_decode($request->input('moreDetails'));
+        }
+
         // Handle file upload if a new banner is provided
         if ($request->hasFile('banner')) {
             $file = $request->file('banner');
@@ -72,5 +77,4 @@ class TypeController extends Controller
 
         return redirect()->route('type.index')->with('success', 'Jenis layanan berhasil diperbarui.');
     }
-
 }
