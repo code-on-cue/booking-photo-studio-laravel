@@ -1,0 +1,155 @@
+@startuml
+entity users {
+    *id : bigint PK
+    --
+    role : varchar
+    name : varchar
+    email : varchar (UNIQUE)
+    phone : varchar
+    email_verified_at : timestamp
+    password : varchar
+    remember_token : varchar
+    created_at : timestamp
+    updated_at : timestamp
+}
+
+entity types {
+    *id : bigint PK
+    --
+    slug : varchar (UNIQUE)
+    name : varchar
+    banner : varchar
+    terms_and_conditions : text
+    moreDetails : json
+    created_at : timestamp
+    updated_at : timestamp
+}
+
+entity transactions {
+    *id : bigint PK
+    --
+    typeId : bigint FK -> types.id
+    userId : bigint FK -> users.id
+    trxId : varchar
+    name : varchar
+    phone : varchar
+    numberOfPerson : int
+    date : date
+    time : time
+    basedPerson : int
+    basedPrice : int
+    additionalPrice : int
+    totalPrice : int
+    downPayment : int
+    linkDrive : text
+    snapToken : varchar
+    status : enum
+    moreDetails : json
+    created_at : timestamp
+    updated_at : timestamp
+}
+
+entity configs {
+    *id : bigint PK
+    --
+    appName : varchar
+    accountSource : varchar
+    accountNumber : varchar
+    accountHolder : varchar
+    whatsapp : varchar
+    instagram : varchar
+    address : text
+    map : text
+    created_at : timestamp
+    updated_at : timestamp
+}
+
+entity boxes {
+    *id : bigint PK
+    --
+    nama : varchar
+    kritik_saran : text
+    created_at : timestamp
+    updated_at : timestamp
+}
+
+entity cache {
+    *key : varchar PK
+    --
+    value : mediumtext
+    expiration : int
+}
+
+entity cache_locks {
+    *key : varchar PK
+    --
+    owner : varchar
+    expiration : int
+}
+
+entity failed_jobs {
+    *id : bigint PK
+    --
+    uuid : varchar (UNIQUE)
+    connection : text
+    queue : text
+    payload : longtext
+    exception : longtext
+    failed_at : timestamp
+}
+
+entity jobs {
+    *id : bigint PK
+    --
+    queue : varchar
+    payload : longtext
+    attempts : tinyint
+    reserved_at : int
+    available_at : int
+    created_at : int
+}
+
+entity job_batches {
+    *id : varchar PK
+    --
+    name : varchar
+    total_jobs : int
+    pending_jobs : int
+    failed_jobs : int
+    failed_job_ids : longtext
+    options : mediumtext
+    cancelled_at : int
+    created_at : int
+    finished_at : int
+}
+
+entity password_reset_tokens {
+    *email : varchar PK
+    --
+    token : varchar
+    created_at : timestamp
+}
+
+entity sessions {
+    *id : varchar PK
+    --
+    user_id : bigint
+    ip_address : varchar
+    user_agent : text
+    payload : longtext
+    last_activity : int
+}
+
+entity migrations {
+    *id : int PK
+    --
+    migration : varchar
+    batch : int
+}
+
+' RELATIONSHIPS
+transactions }o--|| users : userId
+transactions }o--|| types : typeId
+sessions }|..|| users : user_id (optional)
+
+@enduml

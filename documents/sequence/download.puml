@@ -1,0 +1,12 @@
+@startuml
+actor Client
+participant App
+database Database
+
+Client -> App: Login
+Client -> App: Lihat riwayat booking
+App -> Database: Ambil daftar transaksi selesai
+Database --> App: Data transaksi
+Client -> App: Klik unduh / buka link
+App --> Client: Redirect / tampilkan link Google Drive
+@enduml

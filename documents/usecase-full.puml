@@ -1,0 +1,53 @@
+@startuml
+left to right direction
+actor Client
+actor Admin
+
+rectangle "Sistem Booking Foto" {
+  (Login / Register) as login
+  (Lihat Layanan) as viewServices
+  (Lihat Syarat & Ketentuan) as viewTerms
+
+  (Pilih Tipe Booking) as selectType
+  (Isi Form Booking) as fillBookingForm
+  (Konfirmasi Booking) as confirmBooking
+  (Lakukan Pembayaran) as payBooking
+  (Booking Berhasil) as bookingSuccess
+
+  (Lihat Riwayat Booking) as bookingHistory
+  (Unduh Hasil Foto) as downloadPhoto
+
+  (Konfirmasi Kehadiran Client) as confirmAttendance
+  (Upload Link Google Drive) as uploadDrive
+
+  (Booking Portrait) as bookingPortrait
+  (Booking Wedding) as bookingWedding
+  (Booking Keluarga) as bookingKeluarga
+
+  (Edit Konfigurasi Umum) as editConfig
+  (Kelola Tipe Booking) as manageBookingTypes
+
+  Client --> login
+  Client --> viewServices
+  Client --> viewTerms
+  Client --> selectType
+  Client --> fillBookingForm
+  Client --> confirmBooking
+  Client --> payBooking
+  Client --> bookingSuccess
+  Client --> bookingHistory
+  Client --> downloadPhoto
+
+  Admin --> confirmAttendance
+  Admin --> uploadDrive
+  Admin --> editConfig
+  Admin --> manageBookingTypes
+
+  selectType --> bookingPortrait
+  selectType --> bookingWedding
+  selectType --> bookingKeluarga
+
+  fillBookingForm --> confirmBooking
+  confirmBooking --> payBooking
+}
+@enduml

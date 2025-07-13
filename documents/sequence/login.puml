@@ -1,0 +1,10 @@
+@startuml
+actor Client
+participant App
+database Database
+
+Client -> App: Input email & password
+App -> Database: Cari user + cek password hash
+Database --> App: User data / not found
+App --> Client: Login success → dashboard / error message
+@enduml

@@ -1,0 +1,11 @@
+@startuml
+actor Admin
+participant App
+database Database
+
+Admin -> App: Login
+Admin -> App: Pilih transaksi selesai
+Admin -> App: Input / paste link Google Drive
+App -> Database: Simpan link ke transaksi
+App --> Admin: Konfirmasi link berhasil disimpan
+@enduml

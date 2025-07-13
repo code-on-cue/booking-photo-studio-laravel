@@ -1,0 +1,13 @@
+@startuml
+start
+:Pilih tipe booking;
+:Isi form booking;
+:Submit booking;
+if (Data valid?) then (ya)
+  :Simpan transaksi (status pending);
+  :Tampilkan detail & instruksi pembayaran;
+else (tidak)
+  :Tampilkan pesan error;
+endif
+stop
+@enduml

@@ -1,0 +1,9 @@
+@startuml
+start
+:Admin login;
+:Pilih transaksi;
+:Konfirmasi kehadiran;
+:Input / paste link Google Drive;
+:Simpan link ke transaksi;
+stop
+@enduml

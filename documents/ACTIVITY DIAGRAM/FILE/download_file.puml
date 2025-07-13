@@ -1,0 +1,8 @@
+@startuml
+start
+:Login client;
+:Lihat riwayat booking;
+:Pilih transaksi selesai;
+:Klik unduh / buka link Google Drive;
+stop
+@enduml

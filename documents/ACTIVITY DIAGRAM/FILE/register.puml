@@ -1,0 +1,12 @@
+@startuml
+start
+:Input nama, email, no_wa, password;
+:Submit pendaftaran;
+if (Validasi data benar?) then (ya)
+  :Simpan user ke database;
+  :Arahkan ke login / dashboard;
+else (tidak)
+  :Tampilkan pesan error;
+endif
+stop
+@enduml

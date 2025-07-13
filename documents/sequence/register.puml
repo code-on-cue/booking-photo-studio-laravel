@@ -1,0 +1,10 @@
+@startuml
+actor Client
+participant App
+database Database
+
+Client -> App: Input nama, email, no_wa, password
+App -> Database: Simpan user baru
+Database --> App: OK / Error
+App --> Client: Tampilkan hasil (redirect / error)
+@enduml

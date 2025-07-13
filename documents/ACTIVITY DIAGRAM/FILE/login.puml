@@ -1,0 +1,11 @@
+@startuml
+start
+:Input email & password;
+:Submit login;
+if (Validasi berhasil?) then (ya)
+  :Arahkan ke dashboard;
+else (tidak)
+  :Tampilkan pesan error;
+endif
+stop
+@enduml

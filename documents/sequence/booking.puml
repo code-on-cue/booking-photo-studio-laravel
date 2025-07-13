@@ -1,0 +1,12 @@
+@startuml
+actor Client
+participant App
+database Database
+participant Midtrans
+
+Client -> App: Pilih tipe, isi form booking
+App -> Database: Simpan transaksi (status pending)
+App -> Midtrans: Request SnapToken
+Midtrans --> App: SnapToken
+App --> Client: Tampilkan SnapToken (Midtrans Snap page)
+@enduml

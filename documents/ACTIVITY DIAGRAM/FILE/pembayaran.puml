@@ -1,0 +1,13 @@
+@startuml
+start
+:Pilih metode pembayaran;
+:Lakukan pembayaran;
+if (Pembayaran berhasil diverifikasi?) then (ya)
+  :Update status transaksi ke 'success';
+  :Kirim notifikasi ke client;
+else (tidak)
+  :Tandai status 'failed';
+  :Minta client ulangi pembayaran;
+endif
+stop
+@enduml
