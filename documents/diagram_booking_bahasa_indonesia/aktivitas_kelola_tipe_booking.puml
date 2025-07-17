@@ -1,0 +1,7 @@
+@startuml
+start
+:Admin login;
+:Kelola tipe booking (tambah/edit/hapus);
+:Simpan perubahan;
+stop
+@enduml

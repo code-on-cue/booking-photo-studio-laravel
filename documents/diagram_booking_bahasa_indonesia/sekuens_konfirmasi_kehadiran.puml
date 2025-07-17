@@ -1,0 +1,10 @@
+@startuml
+actor Admin
+participant Aplikasi
+database Database
+
+Admin -> Aplikasi: Konfirmasi kehadiran
+Aplikasi -> Database: Update status
+Database --> Aplikasi: OK
+Aplikasi --> Admin: Konfirmasi berhasil
+@enduml

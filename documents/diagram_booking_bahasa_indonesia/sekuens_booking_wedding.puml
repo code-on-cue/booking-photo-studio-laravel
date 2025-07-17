@@ -1,0 +1,7 @@
+@startuml
+actor Client
+participant Aplikasi
+
+Client -> Aplikasi: Pilih Wedding
+Aplikasi --> Client: Tampilkan form
+@enduml

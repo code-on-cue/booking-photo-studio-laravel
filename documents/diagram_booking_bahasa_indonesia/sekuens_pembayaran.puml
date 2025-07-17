@@ -1,0 +1,10 @@
+@startuml
+actor Client
+participant Aplikasi
+participant Midtrans
+
+Client -> Aplikasi: Bayar via Midtrans
+Aplikasi -> Midtrans: Request pembayaran
+Midtrans --> Aplikasi: Status pembayaran
+Aplikasi --> Client: Update status
+@enduml

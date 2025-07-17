@@ -1,0 +1,6 @@
+@startuml
+start
+:Pilih tipe Portrait;
+:Isi detail booking;
+stop
+@enduml

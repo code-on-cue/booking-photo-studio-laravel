@@ -1,0 +1,7 @@
+@startuml
+start
+:Admin login;
+:Pilih transaksi;
+:Konfirmasi kehadiran client;
+stop
+@enduml

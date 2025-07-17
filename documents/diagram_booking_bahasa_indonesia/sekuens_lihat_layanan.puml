@@ -1,0 +1,7 @@
+@startuml
+actor Client
+participant Aplikasi
+
+Client -> Aplikasi: Minta daftar layanan (index)
+Aplikasi --> Client: Tampilkan layanan (index)
+@enduml

@@ -1,0 +1,7 @@
+@startuml
+start
+:Login user;
+:Lihat riwayat booking;
+:Tampilkan daftar transaksi;
+stop
+@enduml

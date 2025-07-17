@@ -1,5 +1,6 @@
 @startuml
 left to right direction
+skinparam linetype polyline
 actor Client
 actor Admin
 

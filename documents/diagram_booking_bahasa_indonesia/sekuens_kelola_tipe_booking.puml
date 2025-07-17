@@ -1,0 +1,10 @@
+@startuml
+actor Admin
+participant Aplikasi
+database Database
+
+Admin -> Aplikasi: Kelola tipe booking
+Aplikasi -> Database: Update data
+Database --> Aplikasi: OK
+Aplikasi --> Admin: Update berhasil
+@enduml

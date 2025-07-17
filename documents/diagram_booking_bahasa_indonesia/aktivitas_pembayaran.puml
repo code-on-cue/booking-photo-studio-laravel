@@ -1,0 +1,6 @@
+@startuml
+start
+:Tampilkan halaman pembayaran (Midtrans);
+:User lakukan pembayaran;
+stop
+@enduml

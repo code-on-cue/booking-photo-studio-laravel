@@ -1,0 +1,7 @@
+@startuml
+actor Client
+participant Aplikasi
+
+Client -> Aplikasi: Cek status pembayaran
+Aplikasi --> Client: Booking sukses
+@enduml

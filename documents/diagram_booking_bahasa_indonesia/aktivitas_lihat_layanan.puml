@@ -1,0 +1,6 @@
+@startuml
+start
+:Tampilkan daftar layanan;
+:User melihat detail layanan;
+stop
+@enduml

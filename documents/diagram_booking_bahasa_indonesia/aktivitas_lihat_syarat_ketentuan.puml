@@ -1,0 +1,5 @@
+@startuml
+start
+:Tampilkan syarat & ketentuan;
+stop
+@enduml

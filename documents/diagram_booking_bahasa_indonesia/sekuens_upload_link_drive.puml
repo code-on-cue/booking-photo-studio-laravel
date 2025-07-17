@@ -1,0 +1,10 @@
+@startuml
+actor Admin
+participant Aplikasi
+database Database
+
+Admin -> Aplikasi: Upload link Drive
+Aplikasi -> Database: Simpan link
+Database --> Aplikasi: OK
+Aplikasi --> Admin: Link tersimpan
+@enduml

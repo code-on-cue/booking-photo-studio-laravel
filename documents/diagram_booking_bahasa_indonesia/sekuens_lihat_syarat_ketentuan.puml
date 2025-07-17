@@ -1,0 +1,9 @@
+@startuml
+actor Client
+participant Aplikasi
+
+Client -> Aplikasi: Pilih tipe booking
+Aplikasi -> Client: Tampilkan form booking
+Client -> Aplikasi: Klik tombol baca syarat dan ketentuan
+Aplikasi -> Client: Tampilkan syarat dan ketentuan
+@enduml

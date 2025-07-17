@@ -1,0 +1,7 @@
+@startuml
+start
+:Pembayaran sukses;
+:Update status transaksi;
+:Tampilkan notifikasi sukses;
+stop
+@enduml

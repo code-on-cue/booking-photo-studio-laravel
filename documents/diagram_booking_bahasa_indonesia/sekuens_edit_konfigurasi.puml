@@ -1,0 +1,10 @@
+@startuml
+actor Admin
+participant Aplikasi
+database Database
+
+Admin -> Aplikasi: Edit konfigurasi
+Aplikasi -> Database: Simpan perubahan
+Database --> Aplikasi: OK
+Aplikasi --> Admin: Tersimpan
+@enduml

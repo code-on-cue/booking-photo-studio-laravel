@@ -1,0 +1,7 @@
+@startuml
+start
+:Admin login;
+:Edit konfigurasi umum;
+:Simpan perubahan;
+stop
+@enduml

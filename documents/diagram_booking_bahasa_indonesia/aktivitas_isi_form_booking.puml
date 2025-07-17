@@ -1,0 +1,6 @@
+@startuml
+start
+:User mengisi form booking;
+:Submit form;
+stop
+@enduml

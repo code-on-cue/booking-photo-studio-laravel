@@ -1,0 +1,7 @@
+@startuml
+start
+:Pilih transaksi selesai;
+:Klik link Google Drive;
+:Unduh hasil foto;
+stop
+@enduml

@@ -1,0 +1,10 @@
+@startuml
+actor Client
+participant Aplikasi
+database Database
+
+Client -> Aplikasi: Minta link foto
+Aplikasi -> Database: Ambil link
+Database --> Aplikasi: Link Google Drive
+Aplikasi --> Client: Tampilkan link
+@enduml

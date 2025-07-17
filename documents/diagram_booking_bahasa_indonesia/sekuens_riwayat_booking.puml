@@ -1,0 +1,10 @@
+@startuml
+actor Client
+participant Aplikasi
+database Database
+
+Client -> Aplikasi: Minta riwayat booking
+Aplikasi -> Database: Ambil data
+Database --> Aplikasi: Data riwayat
+Aplikasi --> Client: Tampilkan
+@enduml
