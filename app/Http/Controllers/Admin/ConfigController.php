@@ -20,9 +20,9 @@ class ConfigController extends Controller
         $config = Config::first();
         $request->validate([
             'appName' => 'required',
-            'accountSource' => 'required',
-            'accountNumber' => 'required',
-            'accountHolder' => 'required',
+            // 'accountSource' => 'required',
+            // 'accountNumber' => 'required',
+            // 'accountHolder' => 'required',
             'whatsapp' => 'required',
             'instagram' => 'required',
             'address' => 'required',

@@ -51,7 +51,7 @@
                                                 {{ ($transactions->currentPage() - 1) * $transactions->perPage() + $loop->iteration }}
                                             </td>
                                             <td>
-                                                {{ $item->date }}
+                                                {{ date('d-m-Y', strtotime($item->date)) }}
                                             </td>
                                             <td>
                                                 {{ $item->time }}

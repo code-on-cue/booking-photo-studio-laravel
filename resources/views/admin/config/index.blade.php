@@ -65,7 +65,7 @@
                                 </div>
                             </div>
 
-                            <hr>
+                            {{-- <hr>
                             <h3 class="mb-4">Pembayaran</h3>
 
                             <div class="col-md-12 mb-1">
@@ -103,7 +103,7 @@
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
-                            </div>
+                            </div> --}}
 
                             <div class="col-md-12 mb-1">
                                 <button class="btn btn-success">
