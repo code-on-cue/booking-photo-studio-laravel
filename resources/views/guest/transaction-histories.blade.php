@@ -62,7 +62,11 @@
                                                 </span>
                                             </td>
                                             <td>
-
+                                                @if ($item->status === \App\Models\Transaction::STATUS_SUCCESS && $item->linkDrive)
+                                                    <a href="{{ $item->linkDrive }}" target="_blank"
+                                                        class="btn btn-success btn-sm mb-1 mt-1">Download Soft File</a>
+                                                    <br>
+                                                @endif
                                                 @if ($item->status === \App\Models\Transaction::STATUS_PENDING)
                                                     <a href="{{ $item->snapToken }}" target="_blank"
                                                         class="btn btn-success btn-sm mb-1 mt-1" id="pay-button">Bayar
