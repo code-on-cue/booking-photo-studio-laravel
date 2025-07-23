@@ -43,10 +43,8 @@
                                     <td>{{ $item->name }}</td>
                                     <td>{{ $item->status }}</td>
                                     <td>
-                                        @if ($item->status == 'process')
-                                            <a href="{{ route('transaction.tandai-selesai', $item) }}"
-                                                class="btn btn-primary">Tandai Selesai</a>
-                                        @endif
+                                        <a href="{{ route('transaction.tandai-selesai', $item) }}"
+                                            class="btn btn-primary">Tandai Selesai</a>
                                     </td>
                                 </tr>
                             @endforeach
